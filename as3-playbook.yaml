@@ -1,0 +1,27 @@
+---
+- name: Deploy AS3
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars:
+    url_method: "POST"
+
+  vars_files:
+    - ../creds/creds.yaml
+
+  tasks:
+
+  - name: DeployVS01
+    uri:
+      url: "https://3.10.147.142/mgmt/shared/appsvcs/declare"
+      user: "{{ http_user }}"
+      password: "{{ http_password }}"
+      method: "{{ url_method }}"
+      body: "{{ lookup('file','vs01.json') }}"
+      force_basic_auth: yes
+      status_code: 200
+      validate_certs: no
+      body_format: "json"
+    register: as3_response
+...
